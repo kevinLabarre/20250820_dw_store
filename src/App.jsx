@@ -2,6 +2,7 @@
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import "./App.css";
 import { Navbar } from "./components/Navbar";
+import { HomePage } from "./pages/HomePage";
 
 function App() {
   const router = createBrowserRouter([
@@ -10,7 +11,9 @@ function App() {
       element: <Root />,
       errorElement: <p>Erreur de chargement ...</p>, // Générer une erreur
       children: [
-        { path: "", element: <h1>Page d'accueil</h1> },
+        // Afficher les produits sur la page d'accueil
+
+        { path: "", element: <HomePage /> },
         { path: "/produits", element: <h1>Mes produits</h1> },
       ],
     },
