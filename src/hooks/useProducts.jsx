@@ -4,19 +4,51 @@ import { useState } from "react";
 export const useProducts = () => {
   const endpoint = "http://localhost:3001/products";
 
+  // Création d'une instance d'axios
+  const api = axios.create({
+    baseURL: endpoint,
+  });
+
+  // Rajouter une délai sur les réponses des requêtes
+  api.interceptors.request.use(
+    (config) =>
+      new Promise((resolve) => setTimeout(() => resolve(config), 1500))
+  );
+
   const [products, setProducts] = useState([]);
+  const [error, setError] = useState(null);
+
+  const [loading, setLoading] = useState(false);
 
   const getProducts = () => {
-    return axios
-      .get(endpoint)
+    setLoading(true);
+    setError(null);
+
+    return api
+      .get()
       .then((resp) => {
         setProducts(resp.data);
         return resp;
       })
       .catch((err) => {
+        setError(err);
         throw err;
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
-  return { getProducts, products };
+  const getById = (id) => {
+    setLoading(true);
+
+    return api
+      .get(`/${id}`)
+      .then((resp) => resp)
+      .catch((err) => {
+        setError(err);
+        throw err;
+      })
+      .finally(() => setLoading(false));
+  };
+
+  return { getProducts, products, error, loading, getById };
 };
