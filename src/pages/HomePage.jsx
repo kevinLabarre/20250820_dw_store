@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect } from "react";
 import { ProductCard } from "../components/ProductCard";
 import { useProducts } from "../hooks/useProducts";
 import { Skeleton } from "../components/Skeleton";
@@ -47,7 +47,7 @@ export const HomePage = () => {
             products.map((p) => <ProductCard product={p} key={p.id} />)
           )
         ) : (
-          [...Array(16).keys()].map(() => <Skeleton />)
+          [...Array(16).keys()].map((_, idx) => <Skeleton key={idx} />)
         )}
       </div>
     </>

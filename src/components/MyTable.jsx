@@ -25,10 +25,10 @@ export const MyTable = ({ data = [] }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((element) => (
-            <tr>
+          {data.map((element, idx) => (
+            <tr key={element.id ? element.id : idx}>
               {keys.map((key) => (
-                <td>{element[key]}</td>
+                <td key={key}>{element[key]}</td>
               ))}
             </tr>
           ))}
