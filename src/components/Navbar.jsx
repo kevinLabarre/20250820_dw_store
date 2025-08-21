@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { HeaderItem } from "./HeaderItem";
 
 export const Navbar = () => {
   return (
@@ -7,10 +8,10 @@ export const Navbar = () => {
         <div className="m-auto w-fit">
           <ul className="flex items-center gap-10">
             <li>
-              <Link to="">Accueil</Link>
+              <HeaderItem href="/">Accueil</HeaderItem>
             </li>
             <li>
-              <Link to="/produits">produits</Link>
+              <HeaderItem href="/produits">Produits</HeaderItem>
             </li>
           </ul>
         </div>

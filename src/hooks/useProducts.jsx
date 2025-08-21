@@ -50,5 +50,23 @@ export const useProducts = () => {
       .finally(() => setLoading(false));
   };
 
-  return { getProducts, products, error, loading, getById };
+  const getPaginate = (pageIdx = 1, perPage = 10) => {
+    const url = `/?_page=${pageIdx}&_per_page=${perPage}`;
+    setLoading(true);
+    setError(null);
+
+    return api
+      .get(url)
+      .then((resp) => {
+        setProducts(resp.data);
+        return resp;
+      })
+      .catch((err) => {
+        setError(err);
+        throw err;
+      })
+      .finally(() => setLoading(false));
+  };
+
+  return { getProducts, products, error, loading, getById, getPaginate };
 };
