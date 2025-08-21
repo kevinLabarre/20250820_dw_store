@@ -2,11 +2,15 @@ import { useEffect, useState } from "react";
 import { useProducts } from "../hooks/useProducts";
 import { MyTable } from "./MyTable";
 import { Pagination } from "./Pagination";
+import { SelectPagination } from "./SelectPagination";
 
 export const ProductsListWithPaginationButtons = () => {
   const { getPaginate, loading, error } = useProducts();
 
-  const [page, setPage] = useState(1);
+  const [paginationParams, setPaginationParams] = useState({
+    pageIdx: 1,
+    itemsPerPage: 5,
+  });
 
   const [responseApi, setResponseApi] = useState({
     first: 1,
@@ -17,12 +21,35 @@ export const ProductsListWithPaginationButtons = () => {
     items: null, //Nbr total d'éléments en BDD
   });
 
+  const [selectOptions, setSelectOptions] = useState([]);
+
   useEffect(() => {
-    getPaginate(page).then((resp) => setResponseApi(resp.data));
-  }, [page]);
+    getPaginate(paginationParams.pageIdx, paginationParams.itemsPerPage).then(
+      (resp) => setResponseApi(resp.data)
+    );
+  }, [paginationParams]);
 
   const handleClickOnPagination = (pageNbr) => {
-    setPage(pageNbr);
+    setPaginationParams((prev) => {
+      return { ...prev, pageIdx: pageNbr };
+    });
+  };
+
+  // useEffect utilisé pour recalculer les 'options' afficher par le <select></select>
+  // On relance le calcul à chaque nouvelle réponse le l'API (donc au chargement initial et a chaque changement de page)
+  useEffect(() => {
+    const array = Array.from({ length: responseApi.items }, (_, idx) => ({
+      value: idx + 1,
+      label: `Nombre d'éléments par page ${idx + 1}`,
+    }));
+    setSelectOptions(array);
+  }, [responseApi]);
+
+  const handleSelectChange = (nbrItems) => {
+    setPaginationParams({
+      pageIdx: 1,
+      itemsPerPage: nbrItems,
+    });
   };
 
   return (
@@ -35,6 +62,13 @@ export const ProductsListWithPaginationButtons = () => {
           handleClick={handleClickOnPagination}
         />
       )}
+      <div className="w-fit m-auto">
+        <SelectPagination
+          options={selectOptions}
+          onChangeFct={handleSelectChange}
+          initialValue={paginationParams.itemsPerPage}
+        />
+      </div>
     </>
   );
 };

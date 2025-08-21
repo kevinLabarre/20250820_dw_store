@@ -25,7 +25,9 @@ function App() {
     return (
       <>
         <Navbar />
-        <Outlet />
+        <div className="app-container">
+          <Outlet />
+        </div>
       </>
     );
   }
