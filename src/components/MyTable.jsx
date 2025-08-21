@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
+import { MyModal } from "./MyModal";
 
-export const MyTable = ({ data = [] }) => {
+export const MyTable = ({ data = [], update = null, deletefct = null }) => {
   // Attention, pour que notre tableau fonctionne,
   // il faut que tous les objets de la liste aient les mm attributs/propriétés)
+
+  // update est un type {fct, form}
 
   const [keys, setKeys] = useState([]);
 
@@ -11,6 +14,11 @@ export const MyTable = ({ data = [] }) => {
       setKeys(Object.keys(data[0]));
     }
   }, [data]);
+
+  const handleClickOnUpdate = (product) => {
+    update.setUpdateProduct(product);
+    document.getElementById("my_modal").showModal();
+  };
 
   return (
     <>
@@ -22,6 +30,7 @@ export const MyTable = ({ data = [] }) => {
             {keys.map((key) => (
               <th key={key}>{key}</th>
             ))}
+            {(update || deletefct) && <th>Actions</th>}
           </tr>
         </thead>
         <tbody>
@@ -30,10 +39,21 @@ export const MyTable = ({ data = [] }) => {
               {keys.map((key) => (
                 <td key={key}>{element[key]}</td>
               ))}
+              <td>
+                {update && (
+                  <button
+                    onClick={() => handleClickOnUpdate(element)}
+                    className="btn btn-warning"
+                  >
+                    Modifier
+                  </button>
+                )}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+      {update && <MyModal content={update.form} />}
     </>
   );
 };

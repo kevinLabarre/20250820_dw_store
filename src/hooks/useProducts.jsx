@@ -68,5 +68,22 @@ export const useProducts = () => {
       .finally(() => setLoading(false));
   };
 
-  return { getProducts, products, error, loading, getById, getPaginate };
+  const updateProduct = (product) => {
+    return api
+      .put(`/${product.id}`, product)
+      .then((resp) => resp)
+      .catch((err) => {
+        throw err;
+      });
+  };
+
+  return {
+    getProducts,
+    products,
+    error,
+    loading,
+    getById,
+    getPaginate,
+    updateProduct,
+  };
 };
