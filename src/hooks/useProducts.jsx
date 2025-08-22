@@ -1,81 +1,38 @@
 import axios from "axios";
 import { useState } from "react";
+import { useInstanceAxios } from "./useInstanceAxios";
 
 export const useProducts = () => {
-  const endpoint = "http://localhost:3001/products";
-
-  // Création d'une instance d'axios
-  const api = axios.create({
-    baseURL: endpoint,
-  });
-
-  // Rajouter une délai sur les réponses des requêtes
-  api.interceptors.request.use(
-    (config) =>
-      new Promise((resolve) => setTimeout(() => resolve(config), 1500))
-  );
+  const api = useInstanceAxios();
 
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
 
   const [loading, setLoading] = useState(false);
 
-  const getProducts = () => {
+  const handleRequest = async (requestFunction, ...args) => {
     setLoading(true);
     setError(null);
 
-    return api
-      .get()
-      .then((resp) => {
-        setProducts(resp.data);
-        return resp;
-      })
-      .catch((err) => {
-        setError(err);
-        throw err;
-      })
-      .finally(() => setLoading(false));
+    try {
+      const response = await requestFunction(...args);
+      setProducts(response.data);
+      setLoading(false);
+      return response;
+    } catch (error) {
+      setLoading(false);
+      throw error;
+    }
   };
 
-  const getById = (id) => {
-    setLoading(true);
-
-    return api
-      .get(`/${id}`)
-      .then((resp) => resp)
-      .catch((err) => {
-        setError(err);
-        throw err;
-      })
-      .finally(() => setLoading(false));
-  };
-
+  const getProducts = () => handleRequest(api.get, "/products");
+  const getById = (id) => handleRequest(api.get, `/products/${id}`);
   const getPaginate = (pageIdx = 1, perPage = 10) => {
-    const url = `/?_page=${pageIdx}&_per_page=${perPage}`;
-    setLoading(true);
-    setError(null);
-
-    return api
-      .get(url)
-      .then((resp) => {
-        setProducts(resp.data);
-        return resp;
-      })
-      .catch((err) => {
-        setError(err);
-        throw err;
-      })
-      .finally(() => setLoading(false));
+    const url = `/products/?_page=${pageIdx}&_per_page=${perPage}`;
+    return handleRequest(api.get, url);
   };
-
-  const updateProduct = (product) => {
-    return api
-      .put(`/${product.id}`, product)
-      .then((resp) => resp)
-      .catch((err) => {
-        throw err;
-      });
-  };
+  const updateProduct = (product) =>
+    handleRequest(api.put, `/products/${product.id}`, product);
 
   return {
     getProducts,

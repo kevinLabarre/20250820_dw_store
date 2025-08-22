@@ -1,10 +1,18 @@
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { addToCart } from "../features/cartSlice";
 
 export const ProductCard = ({ product }) => {
   const navigate = useNavigate();
 
   const handleShowDetail = () => {
     navigate(`produits/${product.id}`);
+  };
+
+  const dispatch = useDispatch();
+
+  const handleAddToCart = () => {
+    dispatch(addToCart(product));
   };
 
   return (
@@ -27,6 +35,11 @@ export const ProductCard = ({ product }) => {
         <div className="justify-end card-actions">
           <button onClick={handleShowDetail} className="btn btn-primary">
             Voir
+          </button>
+        </div>
+        <div>
+          <button onClick={handleAddToCart} className="btn">
+            Ajouter au panier
           </button>
         </div>
       </div>

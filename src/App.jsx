@@ -5,6 +5,8 @@ import { Navbar } from "./components/Navbar";
 import { HomePage } from "./pages/HomePage";
 import { ProductDetails } from "./pages/ProductDetails";
 import { ProductsPage } from "./pages/ProductsPage";
+import { CartPage } from "./pages/CartPage";
+import { LoginPage } from "./pages/LoginPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -17,6 +19,8 @@ function App() {
         { path: "", element: <HomePage /> },
         { path: "/produits", element: <ProductsPage /> },
         { path: "/produits/:id", element: <ProductDetails /> },
+        { path: "/cart", element: <CartPage /> },
+        { path: "/connexion", element: <LoginPage /> },
       ],
     },
   ]);

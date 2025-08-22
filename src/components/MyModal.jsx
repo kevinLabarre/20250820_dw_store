@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 export const MyModal = ({ content }) => {
   /* You can open the modal using document.getElementById('my_modal').showModal() method */
 
@@ -13,4 +15,8 @@ export const MyModal = ({ content }) => {
       </div>
     </dialog>
   );
+};
+
+MyModal.propTypes = {
+  content: PropTypes.func.isRequired,
 };

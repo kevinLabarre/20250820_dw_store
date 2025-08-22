@@ -39,7 +39,7 @@
     {
       "id": "10",
       "title": "HyperX Cloud Stinger",
-      "price": 50,
+      "price": "60",
       "image": "https://imgs.search.brave.com/jTEpyzGd9-XChtEXu6muwiUZUQG7IYcF9IgUJ6PCaBM/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly90ZWNo/Z2FtaW5nLm5sL3dw/LWNvbnRlbnQvdXBs/b2Fkcy8yMDIwLzEw/L0h5cGVyWC1DbG91/ZC1TdGluZ2VyLVMu/anBlZw",
       "description": "Le HyperX Cloud Stinger est un casque de jeu léger et confortable pour PC et consoles.",
       "slug": "hyperx-cloud-stinger",

@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import { useProducts } from "../hooks/useProducts";
 import { MyTable } from "../components/MyTable";
 import { ProductsListWithPaginationButtons } from "../components/ProductsListWithPaginationButtons";
+import { useSelector } from "react-redux";
 
 export const ProductsPage = () => {
+  const count = useSelector((state) => state.counter.value);
+
   const { getPaginate, loading, error } = useProducts();
 
   const [responseApi, setResponseApi] = useState({
@@ -35,6 +38,7 @@ export const ProductsPage = () => {
 
   return (
     <>
+      <h1>Compteur redux : {count}</h1>
       <h1>Mes produits (avec pagination)</h1>
       <MyTable data={responseApi.data} />
 
